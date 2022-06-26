@@ -1,28 +1,43 @@
 #Requires -Version 7.0
 
-$timeout_mins=15
+param (
+    [parameter(mandatory=$true)][ValidateSet("windows","linux")][string]$launch_os,
+    [parameter(mandatory=$false)][int]$timeout_mins = 20
+)
 
 $ErrorActionPreference = "Stop"
 
 function Main {
+    if ($launch_os -eq "windows") {
+        $test_temp_path = "X:\temp"
+        $test_pdgtemp_path = "$test_temp_path\pdgtemp"
+        $test_deadline_command_path = "C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe"
+    } elseif ($launch_os -eq "linux") {
+        $test_temp_path = "/Volumes/cloud_prod/temp"
+        $test_pdgtemp_path = "$test_temp_path/pdgtemp"
+        $test_deadline_command_path = "/opt/Thinkbox/Deadline10/bin/deadlinecommand"
+    } else {
+        throw "NO OS specified."
+    }
+
     Write-Host "Ensure pdgtemp exists"
-    if (-Not (Test-Path X:\temp\pdgtemp -PathType Container)) {
+    if (-Not (Test-Path $test_pdgtemp_path -PathType Container)) {
         Write-Host "Create directory"
-        New-Item -Path X:\temp\pdgtemp -Type Directory
+        New-Item -Path $test_pdgtemp_path -Type Directory
     }
 
     Write-Host "Get paths to cleanup before submit..."
-    $output = $(Get-ChildItem X:\temp -Include geo,ifds,render -Recurse)
+    $output = $(Get-ChildItem $test_temp_path -Include geo,ifds,render -Recurse)
     Write-Host "Cleanup: $output"
-    Get-ChildItem X:\temp -Include geo,ifds,render -Recurse | Remove-Item -Recurse
+    Get-ChildItem $test_temp_path -Include geo,ifds,render -Recurse | Remove-Item -Recurse
 
     Write-Host "Copy .hip file"
-    Copy-Item -Path $PSScriptRoot\test.deadline.v023.test_pdg_ubl_h19.0_graph_as_job_mantra.hip -Destination X:\temp\. -Force
+    Copy-Item -Path $PSScriptRoot\test.deadline.v023.test_pdg_ubl_h19.0_graph_as_job_mantra.hip -Destination $test_temp_path -Force
     Write-Host "Copy temp dir"
-    Copy-Item -Path $PSScriptRoot\10360 -Destination X:\temp\pdgtemp\. -Recurse -Force
+    Copy-Item -Path $PSScriptRoot\10360 -Destination $test_pdgtemp_path -Recurse -Force
 
     Write-Host "`nSubmitting..."
-    $allOutput = $(& 'C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe' `
+    $allOutput = $(& "$test_deadline_command_path" `
         $PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_jobInfo.job `
         $PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_pluginInfo.job 2>&1)
 
@@ -57,23 +72,25 @@ function Main {
 
     Write-Host "`nMonitoring job until success or failure..."
 
-    $startDate = Get-Date
-    $update_time = Get-Date
+    $startTime = Get-Date
+    $elapsedTime = $(get-date) - $StartTime
 
-    while ((-Not ($completed -eq 1)) -And ($failed -lt 1) -And ($startDate.AddMinutes($timeout_mins) -gt $update_time)) {
-        Write-Host "`nGetting job details until job passes or fails"
-        $jobdetails = $(& 'C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe' -GetJobDetails $jobid)
+    while ((-Not ($completed -eq 1)) -And ($failed -lt 1) -And ($startTime.AddMinutes($timeout_mins) -gt $($startTime + $elapsedTime))) {
+        Write-Host "`nGetting job details until job passes or fails."
+        $jobdetails = $(& "$test_deadline_command_path" -GetJobDetails $jobid)
         $completed = Get-Value "$jobdetails" "Completed"
         $failed = Get-Value "$jobdetails" "Failed"
         $pending = Get-Value "$jobdetails" "Pending"
         $rendering = Get-Value "$jobdetails" "Rendering"
         $suspended = Get-Value "$jobdetails" "Suspended"
         Start-Sleep -s 10
-        $update_time = Get-Date
+        $elapsedTime = $(get-date) - $StartTime
+        $totalTime = "{0:HH:mm:ss}" -f ([datetime]$elapsedTime.Ticks)
+        Write-Host "Elapsed Time $totalTime"
     }
 
-    if (-Not ($startDate.AddMinutes($timeout_mins) -gt $update_time)) {
-        Write-Warning "Timed out after $timeout_mins mins"
+    if (-Not ($startTime.AddMinutes($timeout_mins) -gt $($startTime + $elapsedTime))) {
+        Write-Warning "Timed out after $totalTime"
         Write-Host "`nJob details:"
         Write-Host $jobdetails
         exit(1)
@@ -94,6 +111,7 @@ function Main {
     }
 
     Write-Host "`nTest Success"
+    Write-Host "Duration: $totalTime"
 }
 
 Main
