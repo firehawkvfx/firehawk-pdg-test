@@ -12,10 +12,14 @@ function Main {
         $test_temp_path = "X:\temp"
         $test_pdgtemp_path = "$test_temp_path\pdgtemp"
         $test_deadline_command_path = "C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe"
+        $jobinfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_jobInfo.job"
+        $plugininfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_pluginInfo.job"
     } elseif ($launch_os -eq "linux") {
         $test_temp_path = "/Volumes/cloud_prod/temp"
         $test_pdgtemp_path = "$test_temp_path/pdgtemp"
         $test_deadline_command_path = "/opt/Thinkbox/Deadline10/bin/deadlinecommand"
+        $jobinfo = "$PSScriptRoot/deadline-job-files/62b7fb682946471ad77efd2d_jobInfo.job"
+        $plugininfo = "$PSScriptRoot/deadline-job-files/62b7fb682946471ad77efd2d_pluginInfo.job"
     } else {
         throw "NO OS specified."
     }
@@ -37,9 +41,7 @@ function Main {
     Copy-Item -Path $PSScriptRoot\10360 -Destination $test_pdgtemp_path -Recurse -Force
 
     Write-Host "`nSubmitting..."
-    $allOutput = $(& "$test_deadline_command_path" `
-        $PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_jobInfo.job `
-        $PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_pluginInfo.job 2>&1)
+    $allOutput = $(& "$test_deadline_command_path" $jobinfo $plugininfo 2>&1)
 
     $stderr = $allOutput | ?{ $_ -is [System.Management.Automation.ErrorRecord] }
     $output = $allOutput | ?{ $_ -isnot [System.Management.Automation.ErrorRecord] }
