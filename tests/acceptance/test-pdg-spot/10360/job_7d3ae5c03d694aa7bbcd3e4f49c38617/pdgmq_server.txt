@@ -1,0 +1,2 @@
+PDG_MQ 192.168.82.13 56263 56263 56264
+## Message Queue Server Running

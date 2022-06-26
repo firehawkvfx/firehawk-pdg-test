@@ -1,0 +1,16 @@
+Plugin=PDGDeadline
+CustomPluginDirectory=/Volumes/cloud_prod/temp/pdgtemp/10360/plugins
+Name=PDG MQ
+Frames=0
+Pool=none
+Group=cloud_c8_engine
+Priority=50
+Department=
+BatchName=PDG test.deadline.v022.test_pdg_ubl_h19.0_graph_as_job_mantra 2022-06-26 15:36:56.082300
+Comment=
+OnJobComplete=Nothing
+MachineLimit=0
+LimitGroups=
+ExtraInfoKeyValue0=PDGJobType=MQJob
+ExtraInfoKeyValue1=MQExecutable=/Volumes/cloud_prod/temp/pdgtemp/10360/mqserver$PDG_EXE
+ExtraInfoKeyValue2=MQArgs=-p 0 -n 1024 -l 3 -c "/Volumes/cloud_prod/temp/pdgtemp/10360/job_7b3fdd92f6394782965fb3057894b547/pdgmq_server.txt" -w 0 1024 result

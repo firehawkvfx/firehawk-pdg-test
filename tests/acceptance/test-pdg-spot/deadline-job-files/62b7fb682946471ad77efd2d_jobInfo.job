@@ -1,0 +1,35 @@
+Name=PDG SUBMIT AS GRAPH JOB
+BatchName=PDG test.deadline.v023.test_pdg_ubl_h19.0_graph_as_job_mantra 2022-06-26 15:53:28.608544
+UserName=user
+Region=
+Frames=0
+Group=cloud_c8_engine
+Denylist=
+ScheduledStartDateTime=26/06/2022 15:53
+OverrideTaskExtraInfoNames=False
+CustomPluginDirectory=/Volumes/cloud_prod/temp/pdgtemp/10360/plugins
+MachineName=DESKTOP-IFBSPBT
+Plugin=PDGDeadline
+OutputDirectory0=/Volumes/cloud_prod/temp
+EventOptIns=
+EnvironmentKeyValue0=PDG_RESULT_SERVER=
+EnvironmentKeyValue1=PDG_HTTP_PORT=None
+EnvironmentKeyValue2=PDG_DIR=/Volumes/cloud_prod/temp
+EnvironmentKeyValue3=PDG_TEMP=/Volumes/cloud_prod/temp/pdgtemp/10360
+EnvironmentKeyValue4=PDG_SHARED_TEMP=/Volumes/cloud_prod/temp/pdgtemp/10360
+EnvironmentKeyValue5=PDG_SCRIPTDIR=/Volumes/cloud_prod/temp/pdgtemp/10360/scripts
+EnvironmentKeyValue6=PDG_ITEM_DATA_SOURCE=0
+EnvironmentKeyValue7=PDG_JOBID=DL_JOB_ID
+EnvironmentKeyValue8=PDG_JOBID_VAR=PDG_JOBID
+EnvironmentKeyValue9=PDG_PYATTRIB_LOADER=
+EnvironmentKeyValue10=PDG_VERBOSE=1
+EnvironmentKeyValue11=PDG_DISABLE_TIMESTAMPS=1
+EnvironmentKeyValue12=PDG_RELEASE_SLOT_ON_POLL=0
+EnvironmentKeyValue13=PDG_BREAKAWAY_FROM_JOB=1
+EnvironmentKeyValue14=PDG_HFS=/opt/hfs19.0
+EnvironmentKeyValue15=PDG_MQ_CONN_FILE=None
+EnvironmentKeyValue16=PDG_JOBUSE_PDGNET=1
+EnvironmentKeyValue17=PDG_USE_PDGNET=1
+EnvironmentKeyValue18=PDG_RESULT_CLIENT_ID=7d0576d2d8bc4ecf97f9955583606160
+EnvironmentKeyValue19=PDG_PATHMAP={"paths":[{"X:/":{"path":"/Volumes/cloud_prod/","zone":"LINUX"}},{"X:/":{"path":"/Volumes/cloud_prod/","zone":"LINUX"}}]}
+EnvironmentKeyValue20=PDG_DELOCALIZE=0
