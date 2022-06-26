@@ -1,20 +1,20 @@
 #Requires -Version 7.0
 
 param (
-    [parameter(mandatory=$true)][ValidateSet("windows","linux")][string]$launch_os,
+    [parameter(mandatory=$true)][ValidateSet("windows","linux")][string]$os_type,
     [parameter(mandatory=$false)][int]$timeout_mins = 20
 )
 
 $ErrorActionPreference = "Stop"
 
 function Main {
-    if ($launch_os -eq "windows") {
+    if ($os_type -eq "windows") {
         $test_temp_path = "X:\temp"
         $test_pdgtemp_path = "$test_temp_path\pdgtemp"
         $test_deadline_command_path = "C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe"
         $jobinfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_jobInfo.job"
         $plugininfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_pluginInfo.job"
-    } elseif ($launch_os -eq "linux") {
+    } elseif ($os_type -eq "linux") {
         $test_temp_path = "/Volumes/cloud_prod/temp"
         $test_pdgtemp_path = "$test_temp_path/pdgtemp"
         $test_deadline_command_path = "/opt/Thinkbox/Deadline10/bin/deadlinecommand"
