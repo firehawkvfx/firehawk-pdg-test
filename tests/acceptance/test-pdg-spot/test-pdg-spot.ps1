@@ -85,10 +85,10 @@ function Main {
         $pending = Get-Value "$jobdetails" "Pending"
         $rendering = Get-Value "$jobdetails" "Rendering"
         $suspended = Get-Value "$jobdetails" "Suspended"
-        Start-Sleep -s 10
         $elapsedTime = $(get-date) - $StartTime
         $totalTime = "{0:HH:mm:ss}" -f ([datetime]$elapsedTime.Ticks)
         Write-Host "Elapsed Time $totalTime"
+        Start-Sleep -s 10
     }
 
     if (-Not ($startTime.AddMinutes($timeout_mins) -gt $($startTime + $elapsedTime))) {
