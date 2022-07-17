@@ -1,0 +1,9 @@
+#!/bin/bash
+
+set -e
+
+cd $SCRIPTDIR/../..
+rm -fr codedeploy-app-test-firehawk.zip
+zip -qr codedeploy-app-test-firehawk.zip firehawk-pdg-test/??*
+
+aws s3 cp codedeploy-app-test-firehawk.zip s3://codedeploy.dev.firehawkvfx.com
