@@ -11,7 +11,7 @@ done
 SCRIPTDIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
 cd $SCRIPTDIR
-pwsh "$SCRIPTDIR/../tests/acceptance/test-pdg-spot/test-pdg-spot.ps1"
+pwsh "$SCRIPTDIR/../tests/acceptance/test-pdg-spot/test-pdg-spot.ps1" -os_type linux
 # source ../update_vars.sh
 
 # if [[ "$FH_VAR_target_infra_state" == "destroy" ]]; then
