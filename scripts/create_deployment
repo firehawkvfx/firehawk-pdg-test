@@ -2,7 +2,7 @@
 
 set -e
 
-# All scripts require this
+### All scripts require this
 EXECDIR="$(pwd)"
 SOURCE=${BASH_SOURCE[0]} # resolve the script dir even if a symlink is used to this script
 while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symlink
@@ -11,16 +11,20 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
   [[ $SOURCE != /* ]] && SOURCE=$DIR/$SOURCE # if $SOURCE was a relative symlink, we need to resolve it relative to the path where the symlink file was located
 done
 SCRIPTDIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd ) # The directory of this script
+###
 
-# Base functions and env vars
-# . $SCRIPTDIR/init_deploy_env
-
-# Customise the environment here.
-# echo "export FH_VAR_target_infra_state=\"create\"" 2>&1 | tee --append $SCRIPTDIR/../env_vars.sh
-
-# Finish config and deploy
-# . $SCRIPTDIR/add_images_to_env # Append images to the env
 . $SCRIPTDIR/zip # Zip and deploy app
-. $SCRIPTDIR/deploy
+
+# Create deployment
+cd $SCRIPTDIR/..
+
+aws deploy create-deployment \
+  --application-name firehawk-codedeploy-test-app \
+  --deployment-config-name CodeDeployDefault.OneAtATime \
+  --deployment-group-name firehawk-test-group \
+  --description "Firehawk test" \
+  --s3-location bucket=codedeploy.dev.firehawkvfx.com,bundleType=zip,key=codedeploy-app-test-firehawk.zip \
+  --file-exists-behavior OVERWRITE \
+  --ignore-application-stop-failures
 
 cd $EXECDIR
