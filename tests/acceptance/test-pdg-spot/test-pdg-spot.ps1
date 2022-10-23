@@ -37,7 +37,7 @@ function Main {
     Get-ChildItem $test_temp_path -Include geo,ifds,render -Recurse | Remove-Item -Recurse
 
     Write-Host "Copy .hip file"
-    Copy-Item -Path $PSScriptRoot\test.deadline.v023.test_pdg_ubl_h19.0_graph_as_job_mantra.hip -Destination $test_temp_path -Force
+    Copy-Item -Path $PSScriptRoot\test.deadline.v023.test_pdg_ubl_h19.5_graph_as_job_mantra.hip -Destination $test_temp_path -Force
     Write-Host "Copy temp dir"
     Copy-Item -Path $PSScriptRoot\10360 -Destination $test_pdgtemp_path -Recurse -Force
 
