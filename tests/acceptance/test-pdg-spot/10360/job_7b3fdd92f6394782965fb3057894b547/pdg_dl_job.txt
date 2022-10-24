@@ -11,7 +11,7 @@ Pool=none
 Group=cloud_c8_engine
 Priority=50
 Department=
-BatchName=PDG test.deadline.v022.test_pdg_ubl_h19.5_graph_as_job_mantra 2022-06-26 15:36:56.082300
+BatchName=PDG test.deadline.v022.test_pdg_ubl_h19.0_graph_as_job_mantra 2022-06-26 15:36:56.082300
 Comment=
 OnJobComplete=Nothing
 MachineLimit=0
@@ -30,7 +30,7 @@ EnvironmentKeyValue9=PDG_PYATTRIB_LOADER=
 EnvironmentKeyValue10=PDG_DISABLE_TIMESTAMPS=1
 EnvironmentKeyValue11=PDG_RELEASE_SLOT_ON_POLL=0
 EnvironmentKeyValue12=PDG_BREAKAWAY_FROM_JOB=1
-EnvironmentKeyValue13=PDG_HFS=/opt/hfs19.5
+EnvironmentKeyValue13=PDG_HFS=/opt/hfs19.0
 EnvironmentKeyValue14=PDG_MQ_CONN_FILE=/Volumes/cloud_prod/temp/pdgtemp/10360/job_7b3fdd92f6394782965fb3057894b547/pdgmq_server.txt
 EnvironmentKeyValue15=PDG_JOBUSE_PDGNET=1
 EnvironmentKeyValue16=PDG_USE_PDGNET=1
