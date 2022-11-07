@@ -12,13 +12,13 @@ function Main {
     if ($os_type -eq "windows") {
         $test_temp_path = "X:\temp"
         $test_pdgtemp_path = "$test_temp_path\pdgtemp"
-        $test_deadline_command_path = "C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe"
+        $deadline_command_excutable_path = "C:\Program Files\Thinkbox\Deadline10\bin\deadlinecommand.exe"
         $jobinfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_jobInfo.job"
         $plugininfo = "$PSScriptRoot\deadline-job-files\62b7fb682946471ad77efd2d_pluginInfo.job"
     } elseif ($os_type -eq "linux") {
         $test_temp_path = "/Volumes/cloud_prod/temp"
         $test_pdgtemp_path = "$test_temp_path/pdgtemp"
-        $test_deadline_command_path = "/opt/Thinkbox/Deadline10/bin/deadlinecommand"
+        $deadline_command_excutable_path = "/opt/Thinkbox/Deadline10/bin/deadlinecommand"
         $jobinfo = "$PSScriptRoot/deadline-job-files/62b7fb682946471ad77efd2d_jobInfo.job"
         $plugininfo = "$PSScriptRoot/deadline-job-files/62b7fb682946471ad77efd2d_pluginInfo.job"
     } else {
@@ -42,7 +42,9 @@ function Main {
     Copy-Item -Path $PSScriptRoot\10360 -Destination $test_pdgtemp_path -Recurse -Force
 
     Write-Host "`nSubmitting..."
-    $allOutput = $(& "$test_deadline_command_path" $jobinfo $plugininfo 2>&1)
+    $allOutput = $(& "$deadline_command_excutable_path" $jobinfo $plugininfo 2>&1)
+    
+    # $allOutput = $(& "$deadline_command_excutable_path" SubmitCommandLineJob -executable /opt/hfs19.0/bin/hython -arguments -c "print('test inside hython')" -frames 1 -chunksize 1 -group cloud_c8_engine -name "hython test" -limits engine_ubl 2>&1)
 
     $stderr = $allOutput | ?{ $_ -is [System.Management.Automation.ErrorRecord] }
     $output = $allOutput | ?{ $_ -isnot [System.Management.Automation.ErrorRecord] }
@@ -80,7 +82,7 @@ function Main {
 
     while ((-Not ($completed -eq 1)) -And ($failed -lt 1) -And ($startTime.AddMinutes($timeout_mins) -gt $($startTime + $elapsedTime))) {
         Write-Host "`nGetting job details until job passes or fails."
-        $jobdetails = $(& "$test_deadline_command_path" -GetJobDetails $jobid)
+        $jobdetails = $(& "$deadline_command_excutable_path" -GetJobDetails $jobid)
         $completed = Get-Value "$jobdetails" "Completed"
         $failed = Get-Value "$jobdetails" "Failed"
         $pending = Get-Value "$jobdetails" "Pending"
