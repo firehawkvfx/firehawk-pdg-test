@@ -28,7 +28,7 @@ function Main {
     Write-Host "Ensure pdgtemp exists"
     if (-Not (Test-Path $test_pdgtemp_path -PathType Container)) {
         Write-Host "Create directory"
-        New-Item -Path $test_pdgtemp_path -Type Directory
+        New-Item $test_pdgtemp_path -ItemType Directory
     }
 
     Write-Host "Get paths to cleanup before submit..."
