@@ -27,8 +27,16 @@ function Main {
 
     Write-Host "Ensure pdgtemp exists"
     if (-Not (Test-Path $test_pdgtemp_path -PathType Container)) {
-        Write-Host "Create directory"
-        New-Item $test_pdgtemp_path -ItemType Directory
+        Write-Host "Create directory as user: $([Environment]::UserName)"
+        try {
+            Write-Host "Creating dir..."
+            New-Item $test_pdgtemp_path -ItemType Directory
+        } catch {
+            Write-Host "creation failed."
+            Write-Host "Permissions of parent dir: $test_temp_path/.."
+            ls -l $test_temp_path/..
+        }
+
     }
 
     Write-Host "Get paths to cleanup before submit..."
