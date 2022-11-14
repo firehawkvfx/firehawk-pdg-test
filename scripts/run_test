@@ -10,6 +10,22 @@ while [ -h "$SOURCE" ]; do # resolve $SOURCE until the file is no longer a symli
 done
 SCRIPTDIR=$( cd -P "$( dirname "$SOURCE" )" >/dev/null 2>&1 && pwd )
 
+echo "Wait until deadline10launcher has started and storage mounts are present..."
+
+tries=0
+max_tries=90
+until [ $tries -gt $max_tries ] || service deadline10launcher status | grep -m 1 "Active: active (running)"; do
+  tries=$(( $tries + 1 ))
+  sleep 10
+done
+if [ $tries -gt $max_tries ]; then
+  echo "Command timed out before service arrived"
+  exit 1
+fi
+
+echo "...deadline10launcher running."
+echo "Run test."
+
 cd $SCRIPTDIR
 pwsh "$SCRIPTDIR/../tests/acceptance/test-pdg-spot/test-pdg-spot.ps1" -os_type linux
 # source ../update_vars.sh
